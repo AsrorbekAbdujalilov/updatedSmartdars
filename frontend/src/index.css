@@ -1,0 +1,10 @@
+@import "./assets/legacy.css";
+@import "./assets/student-dashboard.css";
+@import "./assets/classes.css";
+@import "./assets/class-detail.css";
+@import "./assets/tests-dashboard.css";
+@import "./assets/quiz-maker-new.css";
+@import "./assets/checker.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

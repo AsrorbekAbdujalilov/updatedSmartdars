@@ -1,0 +1,936 @@
+/* ========== KAHOOT-STYLE QUIZ MAKER CSS ========== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #f0f0f5;
+    font-family: 'Roboto', sans-serif;
+    color: #3c4043;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ── Container ── */
+.qm-container {
+    max-width: 780px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+}
+
+/* ── Header ── */
+.qm-header-area {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f5;
+}
+
+.qm-header-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #1e1e2f;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.qm-back-btn {
+    text-decoration: none;
+    color: #5f6368;
+    background: #f1f3f4;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.qm-back-btn:hover {
+    background: #e8eaed;
+    color: #202124;
+}
+
+/* ── Form Steps ── */
+.qm-step {
+    margin-bottom: 28px;
+}
+
+.qm-step-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e1e2f;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.qm-step-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* ── Inputs ── */
+.qm-input,
+.qm-textarea,
+.qm-topic-input,
+.qm-rich-editor {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+    color: #3c4043;
+    border: 1.5px solid #dadce0;
+    border-radius: 10px;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    font-family: inherit;
+}
+
+.qm-input:focus,
+.qm-textarea:focus,
+.qm-topic-input:focus,
+.qm-rich-editor:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.qm-textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.qm-input.error,
+.qm-textarea.error {
+    border-color: #d93025;
+}
+
+.qm-error-text {
+    color: #d93025;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.qm-error-text.active {
+    display: block;
+}
+
+/* ── Pills (type/diff selector) ── */
+.qm-options-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.qm-option-pill {
+    padding: 10px 22px;
+    border-radius: 8px;
+    background: #f1f3f4;
+    border: 1.5px solid transparent;
+    font-size: 14px;
+    font-weight: 500;
+    color: #3c4043;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qm-option-pill:hover {
+    background: #e8eaed;
+}
+
+.qm-option-pill.selected {
+    background: #ede9fe;
+    color: #4f46e5;
+    border-color: #6366f1;
+}
+
+/* ── Action Area ── */
+.qm-action-area {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    text-align: right;
+}
+
+/* ── Primary Button ── */
+.qm-btn-primary {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 160px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.qm-btn-primary:hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.qm-btn-primary:active {
+    transform: translateY(0);
+}
+
+.qm-btn-primary:disabled {
+    background: #dadce0;
+    color: #9aa0a6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ── Generated Questions Area ── */
+#generated-questions-area {
+    display: none;
+    margin-top: 32px;
+}
+
+/* ════════════════════════════════════════
+   KAHOOT-STYLE QUESTION BLOCK
+════════════════════════════════════════ */
+.qm-question-box {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 20px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    transition: box-shadow 0.25s;
+}
+
+.qm-question-box:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Question Top Toolbar ── */
+.qm-q-toolbar {
+    background: #9b51e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    gap: 8px;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.qm-q-toolbar-left,
+.qm-q-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Badge inputs */
+.qm-badge {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 6px;
+    padding: 2px 6px;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    gap: 4px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.qm-badge label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+    margin: 0;
+}
+
+.qm-badge svg {
+    color: white;
+    width: 20px;
+    height: 20px;
+}
+
+.qm-badge .badge-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+    line-height: 1.1;
+    margin-right: 2px;
+}
+
+.qm-badge input[type=number] {
+    width: 28px;
+    border: 2px solid white;
+    border-radius: 4px;
+    font-weight: 800;
+    color: #9b51e0;
+    background: white;
+    text-align: center;
+    outline: none;
+    padding: 2px 0;
+    font-size: 14px;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.qm-badge input[type=number]::-webkit-inner-spin-button,
+.qm-badge input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.qm-badge select {
+    border: none;
+    border-left: 2px solid white;
+    border-radius: 0 4px 4px 0;
+    background: transparent;
+    font-weight: 700;
+    color: white;
+    outline: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    margin-left: -4px;
+    font-size: 13px;
+}
+
+.qm-badge select option {
+    color: #333;
+    background: #fff;
+}
+
+.qm-badge input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    accent-color: #9b51e0;
+    cursor: pointer;
+    margin: 0;
+    appearance: none;
+    border: 2px solid white;
+    border-radius: 4px;
+    background: transparent;
+    position: relative;
+}
+
+.qm-badge input[type=checkbox]:checked {
+    background: white;
+}
+
+.qm-badge input[type=checkbox]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: #9b51e0;
+    font-size: 16px;
+    font-weight: 900;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Tool Buttons */
+.qm-q-tool-btn {
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 2px solid white;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.qm-q-tool-btn.cancel {
+    background: transparent;
+    color: white;
+}
+
+.qm-q-tool-btn.cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.qm-q-tool-btn.save {
+    background: white;
+    color: #9b51e0;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.qm-q-tool-btn.save:hover {
+    background: #fdfdfd;
+}
+
+.qm-q-tool-btn.save:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+/* ── Question Body (Kahoot Flex Row) ── */
+.qm-q-body {
+    display: flex;
+    flex-direction: row;
+    min-height: 280px;
+    background: #fff;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+/* Sidebar styling exactly like mockup */
+.qm-q-left-toolbar {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 15px;
+    background: #ffffff;
+    width: 80px;
+    box-sizing: content-box;
+}
+
+/* Sidebar Buttons */
+.qm-sidebar-btn {
+    background: #3b82f6;
+    /* Deep blue from mockup */
+    border: none;
+    border-radius: 8px;
+    width: 72px;
+    height: 72px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+.qm-sidebar-btn:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(59, 130, 246, 0.4);
+}
+
+.qm-sidebar-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.qm-sidebar-btn svg {
+    width: 26px;
+    height: 26px;
+}
+
+.qm-sidebar-btn .math-icon {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+/* Question content area */
+.qm-q-content {
+    flex: 1;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+}
+
+.qm-question-title {
+    width: 100%;
+    min-height: 80px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #4a5568;
+    text-align: center;
+    border: none;
+    outline: none;
+    background: transparent;
+    resize: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qm-question-title:empty:before {
+    content: attr(placeholder);
+    color: #a0aec0;
+}
+
+/* ── 2x2 Answer Grid ── */
+.qm-options-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 8px;
+    background: #f8fafc;
+}
+
+.qm-q-option {
+    position: relative;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: default;
+    transition: transform 0.15s, filter 0.15s;
+    box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+}
+
+.qm-q-option:hover {
+    filter: brightness(1.05);
+}
+
+/* Colors from screenshot */
+.qm-q-option:nth-child(1) {
+    background: #e07e10;
+}
+
+/* Orange */
+.qm-q-option:nth-child(2) {
+    background: #3b82f6;
+}
+
+/* Blue */
+.qm-q-option:nth-child(3) {
+    background: #10b981;
+}
+
+/* Green */
+.qm-q-option:nth-child(4) {
+    background: #ef4444;
+}
+
+/* Red */
+
+/* Square Checkbox (Selection) */
+.qm-correct-cb-square {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.qm-q-option.correct .qm-correct-cb-square {
+    background: #4ade80;
+    border-color: #4ade80;
+}
+
+.qm-correct-cb-square::after {
+    content: '';
+}
+
+.qm-q-option.correct .qm-correct-cb-square::after {
+    content: '✓';
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qm-option-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qm-option-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Bottom tools for options */
+.qm-opt-bottom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.qm-opt-action-btn {
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.qm-opt-action-btn svg,
+.qm-opt-action-btn span {
+    transform: scale(0.8);
+}
+
+.qm-opt-action-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.qm-opt-math-preview {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 4px;
+}
+
+/* ── Inline Math (Rendered KaTeX) ── */
+.inline-math {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 4px;
+    cursor: default;
+    user-select: none;
+    background: #f1f5f9;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+.inline-math:hover {
+    background: #e2e8f0;
+}
+
+.qm-option-input[contenteditable=true]:empty:before {
+    content: attr(placeholder);
+    color: rgba(255, 255, 255, 0.65);
+    pointer-events: none;
+    display: block;
+}
+
+/* ── Below answer blocks: save to bank + add option ── */
+.qm-q-footer {
+    padding: 12px 18px;
+    border-top: 1.5px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.qm-save-bank-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    color: #4f46e5;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.qm-save-bank-label input[type=checkbox] {
+    accent-color: #6366f1;
+    width: 16px;
+    height: 16px;
+}
+
+.qm-add-option-btn {
+    background: transparent;
+    color: #6366f1;
+    border: 2px dashed #6366f1;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.qm-add-option-btn:hover {
+    background: #ede9fe;
+}
+
+/* ── Formula button ── */
+.qm-formula-btn {
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    border: 1.5px solid #c4b5fd;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #4f46e5;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.qm-formula-btn:hover {
+    background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+}
+
+/* ── Glass card (AI generated) ── */
+.qm-glass-card {
+    background: #fff;
+}
+
+/* ── Notification ── */
+.qm-notification {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: #323232;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    transform: translateY(100px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+}
+
+.qm-notification.show {
+    transform: translateY(0);
+}
+
+/* ── Equation Editor Modal (enhanced) ── */
+#math-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+}
+
+#math-modal-box {
+    background: #fff;
+    border-radius: 16px;
+    width: 95%;
+    max-width: 640px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+.eq-modal-header {
+    background: #46178f;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 16px 16px 0 0;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.eq-modal-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+}
+
+.eq-modal-body {
+    padding: 18px 20px;
+}
+
+.eq-input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+#math-modal-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 2px solid #c4b5fd;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'Courier New', monospace;
+    outline: none;
+    color: #1e1e2f;
+}
+
+#math-modal-input:focus {
+    border-color: #6366f1;
+}
+
+.eq-insert-btn {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+.eq-insert-btn:hover {
+    background: #4f46e5;
+}
+
+/* Symbol grid */
+.eq-symbols-section {
+    margin-bottom: 14px;
+}
+
+.eq-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+}
+
+.eq-symbol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+    gap: 6px;
+    justify-content: center;
+}
+
+.eq-sym-btn {
+    background: #f8f7ff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 7px;
+    padding: 7px 4px;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.12s;
+    color: #1e1e2f;
+    font-family: 'KaTeX_Main', 'Times New Roman', serif;
+    line-height: 1;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.eq-sym-btn:hover {
+    background: #ede9fe;
+    border-color: #6366f1;
+    color: #4f46e5;
+    transform: scale(1.1);
+}
+
+.eq-sym-btn.wide {
+    grid-column: span 2;
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 700;
+}
+
+/* Preview */
+#math-preview-label {
+    font-size: 12px;
+    color: #6366f1;
+    font-weight: 700;
+    margin: 10px 0 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#math-preview-box {
+    min-height: 44px;
+    border: 2px dashed #c4b5fd;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: #f8f7ff;
+    font-size: 18px;
+    overflow-x: auto;
+    color: #1e1e2f;
+}
+
+/* KaTeX */
+.katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 0;
+}
+
+/* ── Media queries ── */
+@media (max-width: 600px) {
+    .qm-container {
+        margin: 12px;
+        padding: 16px;
+    }
+
+    .qm-options-list {
+        grid-template-columns: 1fr;
+    }
+
+    .eq-symbol-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .qm-q-toolbar {
+        padding: 8px 12px;
+        gap: 8px;
+    }
+}
