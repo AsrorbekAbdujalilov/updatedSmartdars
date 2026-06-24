@@ -1,11 +1,8 @@
-from rest_framework import serializers, viewsets
+from rest_framework import viewsets, permissions
 from .models import TopTeacherReward
-
-class TopTeacherRewardSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TopTeacherReward
-        fields = '__all__'
+from .serializers import TopTeacherRewardSerializer
 
 class TopTeacherRewardViewSet(viewsets.ModelViewSet):
     queryset = TopTeacherReward.objects.all()
     serializer_class = TopTeacherRewardSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

@@ -1,26 +1,20 @@
-from rest_framework import serializers, viewsets
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import CoinUser
-
-class CoinUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CoinUser
-        fields = '__all__'
+from .serializers import CoinUserSerializer
 
 class CoinUserViewSet(viewsets.ModelViewSet):
     queryset = CoinUser.objects.all()
     serializer_class = CoinUserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return CoinUser.objects.all()
+        return CoinUser.objects.filter(id=self.request.user.id)
 
     @action(detail=False, methods=['get'])
     def me(self, request):
-        # Placeholder for returning current logged-in user details
-        return Response({"message": "Current user details"})
-
-    @action(detail=False, methods=['get'], url_path='me/coin-balance')
-    def coin_balance(self, request):
-        return Response({"coin_balance": 0})
-
-    @action(detail=False, methods=['get'], url_path='me/coin-history')
-    def coin_history(self, request):
-        return Response([])
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)

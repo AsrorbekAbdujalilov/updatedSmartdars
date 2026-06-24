@@ -1,45 +1,67 @@
 import { Link } from 'react-router-dom';
 
 const Games = () => {
+    const games = [
+        {
+            id: 'arithmetic',
+            title: 'Arifmetika',
+            desc: 'Matematik amallarni tezkor yeching',
+            icon: '🧮',
+            color: 'bg-blue-500',
+            link: '/games/arithmetic'
+        },
+        {
+            id: 'memory',
+            title: 'Xotira',
+            desc: 'Juftliklarni toping va xotirani charxlang',
+            icon: '🧠',
+            color: 'bg-indigo-500',
+            link: '/games/memory'
+        },
+        {
+            id: 'true-false',
+            title: 'To\'g\'ri/Noto\'g\'ri',
+            desc: 'Faktlarni tezkorlik bilan tekshiring',
+            icon: '✅',
+            color: 'bg-green-500',
+            link: '/games/true-false'
+        },
+        {
+            id: 'word',
+            title: 'So\'z Yig\'ish',
+            desc: 'Harflardan so\'zlar yasang',
+            icon: '🔠',
+            color: 'bg-amber-500',
+            link: '/games/word'
+        }
+    ];
+
     return (
-        <div style={{ fontFamily: "'Nunito', sans-serif", backgroundColor: '#f8fafc', minHeight: '100vh', padding: '40px 20px' }}>
-            <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
-                    <h1 style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', margin: 0 }}>Darajali O'yinlar 🎮</h1>
-                    <Link to="/dashboard" style={{ color: '#64748b', textDecoration: 'none', fontWeight: '600' }}>
-                        &larr; Bosh sahifa
+        <div className="max-w-[1366px] mx-auto px-10 py-16">
+            <div className="text-center mb-20 animate-in fade-in slide-in-from-top-4 duration-700">
+                <h1 className="text-[3rem] font-black text-brand-dark mb-4">Bilimingizni sinab ko'ring</h1>
+                <p className="text-brand-muted font-bold text-xl">O'yinlar orqali o'rganish yanada qiziqarli!</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {games.map((game, idx) => (
+                    <Link
+                        key={game.id}
+                        to={game.link}
+                        style={{ animationDelay: `${idx * 100}ms` }}
+                        className="group bg-white p-10 rounded-[40px] shadow-brand border border-slate-100 hover:shadow-brand-lg transition-all duration-500 hover:-translate-y-3 flex flex-col items-center text-center animate-in zoom-in-95"
+                    >
+                        <div className={`w-[100px] h-[100px] ${game.color} rounded-[32px] flex items-center justify-center text-5xl mb-10 shadow-lg shadow-inherit/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                            {game.icon}
+                        </div>
+                        <h2 className="text-2xl font-black text-brand-dark mb-4">{game.title}</h2>
+                        <p className="text-brand-muted font-bold leading-relaxed mb-10">{game.desc}</p>
+
+                        <div className="mt-auto inline-flex items-center text-brand-blue font-black gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                            O'ynash <span className="text-xl">→</span>
+                        </div>
                     </Link>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-                    {/* Game Card */}
-                    <div style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', height: '100%' }}>
-                        <div style={{ width: '100%', height: '160px', backgroundColor: '#e0f2fe', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '64px', marginBottom: '20px' }}>
-                            🧮
-                        </div>
-                        <h3 style={{ fontSize: '22px', fontWeight: 'bold', color: '#1e293b', marginBottom: '8px' }}>Matematika Daho</h3>
-                        <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '20px', flex: 1 }}>Matematik misollarni tez ishlash orqali aql-zakovatingizni charxlang.</p>
-                        <button style={{ width: '100%', padding: '14px', borderRadius: '12px', backgroundColor: '#3b82f6', color: 'white', fontWeight: 'bold', border: 'none', cursor: 'pointer', fontSize: '16px' }}>O'ynash</button>
-                    </div>
-
-                    <div style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', height: '100%' }}>
-                        <div style={{ width: '100%', height: '160px', backgroundColor: '#fce7f3', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '64px', marginBottom: '20px' }}>
-                            🌍
-                        </div>
-                        <h3 style={{ fontSize: '22px', fontWeight: 'bold', color: '#1e293b', marginBottom: '8px' }}>Geografik Sayyohat</h3>
-                        <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '20px', flex: 1 }}>Davlatlar va poytaxtlarni topish bo'yicha qiziqarli so'rovnoma.</p>
-                        <button style={{ width: '100%', padding: '14px', borderRadius: '12px', backgroundColor: '#ec4899', color: 'white', fontWeight: 'bold', border: 'none', cursor: 'pointer', fontSize: '16px' }}>O'ynash</button>
-                    </div>
-
-                    <div style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', height: '100%' }}>
-                        <div style={{ width: '100%', height: '160px', backgroundColor: '#fef3c7', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '64px', marginBottom: '20px' }}>
-                            🔤
-                        </div>
-                        <h3 style={{ fontSize: '22px', fontWeight: 'bold', color: '#1e293b', marginBottom: '8px' }}>So'z Topish</h3>
-                        <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '20px', flex: 1 }}>Berilgan harflardan mos so'zlarni tuzing va lug'at boyligingizni oshiring.</p>
-                        <button style={{ width: '100%', padding: '14px', borderRadius: '12px', backgroundColor: '#f59e0b', color: 'white', fontWeight: 'bold', border: 'none', cursor: 'pointer', fontSize: '16px' }}>O'ynash</button>
-                    </div>
-                </div>
+                ))}
             </div>
         </div>
     );

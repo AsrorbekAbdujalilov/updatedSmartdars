@@ -1,29 +1,13 @@
-from rest_framework import serializers, viewsets
-from .models import News, Testimonial, QuestionBank
-
-class NewsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = News
-        fields = '__all__'
+from rest_framework import viewsets, permissions
+from .models import News, Testimonial
+from .serializers import NewsSerializer, TestimonialSerializer
 
 class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.filter(is_active=True)
     serializer_class = NewsSerializer
-
-class TestimonialSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Testimonial
-        fields = '__all__'
+    permission_classes = [permissions.AllowAny]
 
 class TestimonialViewSet(viewsets.ModelViewSet):
     queryset = Testimonial.objects.filter(is_active=True)
     serializer_class = TestimonialSerializer
-
-class QuestionBankSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = QuestionBank
-        fields = '__all__'
-
-class QuestionBankViewSet(viewsets.ModelViewSet):
-    queryset = QuestionBank.objects.all()
-    serializer_class = QuestionBankSerializer
+    permission_classes = [permissions.AllowAny]

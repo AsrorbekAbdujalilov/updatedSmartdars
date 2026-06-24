@@ -1,17 +1,16 @@
-from rest_framework import serializers, viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
+from rest_framework import viewsets, permissions
 from .models import PaymentRequest, CoinTransaction
-
-class PaymentRequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PaymentRequest
-        fields = '__all__'
+from .serializers import PaymentRequestSerializer, CoinTransactionSerializer
 
 class PaymentRequestViewSet(viewsets.ModelViewSet):
     queryset = PaymentRequest.objects.all()
     serializer_class = PaymentRequestSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-    @action(detail=False, methods=['get'])
-    def mine(self, request):
-        return Response([])
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return PaymentRequest.objects.all()
+        return PaymentRequest.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -1,81 +1,97 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../api/client';
+import { User } from '../types';
 
 const StudentDashboard = () => {
-    return (
-        <div style={{ padding: 0, margin: 0, fontFamily: "'Google Sans', Roboto, sans-serif" }}>
-            {/* Top Header */}
-            <header className="sd-header">
-                <div className="sd-header-left">
-                    <button className="sd-icon-btn" id="sd-menu-btn">
-                        <svg focusable="false" viewBox="0 0 24 24">
-                            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
-                        </svg>
-                    </button>
-                    <div className="sd-logo-wrap">
-                        <Link to="/" className="sd-logo-link">
-                            <span className="sd-logo-text">Smartdars.uz <span className="sd-badge">O'quvchi</span></span>
-                        </Link>
-                    </div>
-                </div>
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
-                <div className="sd-header-right">
-                    <button className="sd-icon-btn" id="btn-join-class" title="Sinfga qo'shilish">
-                        <svg focusable="false" viewBox="0 0 24 24">
-                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                        </svg>
-                    </button>
-                    <div className="sd-profile" id="sd-profile-wrap">
-                        {/* Placeholder avatar */}
-                        <img src="https://ui-avatars.com/api/?name=Talaba&background=random" alt="Profile" id="sd-avatar" />
-                    </div>
-                </div>
+    useEffect(() => {
+        api.get('/api/users/me/')
+            .then(res => {
+                setUser(res.data);
+            })
+            .catch(() => {
+                // If it fails, maybe the token is invalid
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-brand-bg">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="max-w-[1366px] mx-auto px-10 py-10">
+            <header className="mb-12">
+                <h1 className="text-[2.5rem] font-black text-brand-dark tracking-tight">
+                    Xush kelibsiz, <span className="text-brand-blue">{user?.full_name || 'Talaba'}</span>! 👋
+                </h1>
+                <p className="text-brand-muted mt-2 font-bold text-lg">Bugungi darslarni boshlashga tayyormisiz?</p>
             </header>
 
-            <div className="sd-layout">
-                {/* Sidebar */}
-                <aside className="sd-sidebar" id="sd-sidebar">
-                    <nav className="sd-nav">
-                        <Link to="/" className="sd-nav-item">
-                            <svg className="sd-nav-icon" focusable="false" viewBox="0 0 24 24">
-                                <path d="M12 3L4 9v12h16V9l-8-6zm6 16h-3v-6H9v6H6v-9l6-4.5 6 4.5v9z"></path>
-                            </svg>
-                            Bosh sahifa
-                        </Link>
-                        <Link to="/dashboard" className="sd-nav-item active">
-                            <svg className="sd-nav-icon" focusable="false" viewBox="0 0 24 24">
-                                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h2v5l-1-.75L9 9V4zm9 16H6V4h1v9l3-2.25L13 13V4h5v16z"></path>
-                            </svg>
-                            Sinflarim
-                        </Link>
-                        <Link to="/calendar" className="sd-nav-item">
-                            <svg className="sd-nav-icon" focusable="false" viewBox="0 0 24 24">
-                                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"></path>
-                            </svg>
-                            Taqvim
-                        </Link>
-
-                        <div className="sd-nav-divider"></div>
-
-                        <div className="sd-nav-section-title">Qatnashayotgan sinflarim</div>
-                        <div id="sd-enrolled-list"></div>
-                    </nav>
-                </aside>
-
-                {/* Main Content */}
-                <main className="sd-main">
-                    {/* Empty State Mock */}
-                    <div className="sd-empty-state" id="sd-empty-state">
-                        <img src="https://ssl.gstatic.com/classroom/empty_states_home.svg" alt="Empty" className="sd-empty-img" />
-                        <h2>Hali hech qanday sinfga qo'shilmagansiz</h2>
-                        <p>O'qituvchingizdan sinf kodini so'rang va sinfga qo'shilish uchun <strong>+</strong> tugmasini bosing</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-[30px] mb-12">
+                {/* Stats Cards */}
+                <div className="bg-white p-8 rounded-3xl shadow-brand border border-slate-100 hover:shadow-brand-lg transition-all duration-300">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-sm font-black text-brand-muted uppercase tracking-widest">Hamyon</p>
+                            <p className="text-[2rem] font-black text-brand-dark mt-1">{user?.coin_balance || 0} Coin</p>
+                        </div>
+                        <div className="bg-amber-100 w-14 h-14 rounded-2xl flex items-center justify-center text-3xl">
+                            🪙
+                        </div>
                     </div>
+                    <Link to="/coins" className="text-brand-blue font-bold mt-6 inline-block hover:underline">Coinlarni boshqarish &rarr;</Link>
+                </div>
 
-                    {/* Grid */}
-                    <div className="sd-grid" id="sd-grid">
-                        {/* Placeholder for Dynamic Classes mapping */}
+                <div className="bg-white p-8 rounded-3xl shadow-brand border border-slate-100 hover:shadow-brand-lg transition-all duration-300">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-sm font-black text-brand-muted uppercase tracking-widest">Sinflar</p>
+                            <p className="text-[2rem] font-black text-brand-dark mt-1">4 Faol</p>
+                        </div>
+                        <div className="bg-blue-100 w-14 h-14 rounded-2xl flex items-center justify-center text-3xl">
+                            🏫
+                        </div>
                     </div>
-                </main>
+                    <Link to="/classes" className="text-brand-blue font-bold mt-6 inline-block hover:underline">Barcha sinflar &rarr;</Link>
+                </div>
+
+                <div className="bg-white p-8 rounded-3xl shadow-brand border border-slate-100 hover:shadow-brand-lg transition-all duration-300">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-sm font-black text-brand-muted uppercase tracking-widest">Referral</p>
+                            <p className="text-xl font-black text-brand-dark mt-2 truncate max-w-[150px]">{user?.referral_code || '---'}</p>
+                        </div>
+                        <div className="bg-green-100 w-14 h-14 rounded-2xl flex items-center justify-center text-3xl">
+                            🎁
+                        </div>
+                    </div>
+                    <Link to="/referral" className="text-brand-blue font-bold mt-6 inline-block hover:underline">Do'stlarni taklif qilish &rarr;</Link>
+                </div>
             </div>
+
+            {/* AI Tools Promo Override */}
+            <section className="bg-gradient-to-r from-brand-blue to-[#2C4BDE] rounded-[40px] p-12 text-white shadow-brand-lg mb-12 overflow-hidden relative group">
+                <div className="relative z-10 max-w-xl">
+                    <h2 className="text-[2rem] font-black mb-4">AI yordamida tezroq o'rganing! 🚀</h2>
+                    <p className="text-blue-100 mb-8 font-bold text-lg opacity-90">Darslarni tayyorlash va uy vazifalarini tekshirishni SmartDars AI platformasiga topshiring.</p>
+                    <div className="flex flex-wrap gap-5">
+                        <Link to="/quiz-maker" className="bg-white text-brand-blue px-10 py-4 rounded-pill font-black hover:bg-blue-50 transition-all shadow-xl shadow-black/10">Test yaratish</Link>
+                        <Link to="/checker" className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-pill font-black hover:bg-white/30 transition-all">Homework Checker</Link>
+                    </div>
+                </div>
+                {/* Decorative element */}
+                <div className="absolute top-0 right-0 -mt-20 -mr-20 w-[400px] h-[400px] bg-white opacity-5 rounded-full blur-[100px] group-hover:opacity-10 transition-opacity"></div>
+            </section>
         </div>
     );
 };

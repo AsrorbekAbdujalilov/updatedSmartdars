@@ -1,10 +1,64 @@
-@import "./assets/legacy.css";
-@import "./assets/student-dashboard.css";
-@import "./assets/classes.css";
-@import "./assets/class-detail.css";
-@import "./assets/tests-dashboard.css";
-@import "./assets/quiz-maker-new.css";
-@import "./assets/checker.css";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        @apply font-nunito text-brand-dark bg-brand-bg;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-extrabold leading-tight;
+    }
+}
+
+@layer components {
+    .btn-brand-primary {
+        @apply bg-gradient-to-r from-[#1C65E5] to-[#4489FC] text-white px-7 py-3 rounded-pill font-bold shadow-brand-button transition-all hover:translate-y-[-2px] hover:shadow-brand-button-hover active:scale-95 inline-flex items-center justify-center;
+    }
+
+    .btn-brand-outline {
+        @apply bg-white/40 backdrop-blur-md text-brand-dark px-6 py-2.5 rounded-pill font-bold border border-white/60 shadow-sm transition-all hover:bg-white/70 hover:border-brand-blue hover:text-brand-blue inline-flex items-center justify-center;
+    }
+
+    .nav-pill-container {
+        @apply flex gap-2 bg-brand-bg p-1.5 rounded-pill border border-slate-200;
+    }
+
+    .nav-pill-link {
+        @apply px-5 py-2.5 rounded-pill font-bold text-brand-muted flex items-center gap-2 transition-all hover:bg-black/5;
+    }
+
+    .nav-pill-link.active {
+        @apply bg-[#EEF2FF] text-brand-blue;
+    }
+}
+
+/* Specific Animations for Hero Slider */
+@keyframes slideFade {
+
+    0%,
+    20% {
+        opacity: 1;
+    }
+
+    25%,
+    95% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.animate-slide-fade {
+    animation: slideFade 20s infinite;
+}

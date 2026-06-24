@@ -6,23 +6,23 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from users.views import CoinUserViewSet
 from payments.views import PaymentRequestViewSet
 from referrals.views import ReferralViewSet
-from classes.views import ClassViewSet, QuizViewSet
-from content.views import NewsViewSet, TestimonialViewSet, QuestionBankViewSet
+from classes.views import ClassViewSet, QuizViewSet, QuestionBankViewSet
+from content.views import NewsViewSet, TestimonialViewSet
 from teachers.views import TopTeacherRewardViewSet
 from ai.views import (GenerateQuizView, GenerateOutlineView, GenerateImageView, 
                       ExtractContentView, GradeHomeworkView, GenerateAIReportView, 
                       GenerateClassReportView)
 
 router = DefaultRouter()
-router.register(r'users', CoinUserViewSet)
-router.register(r'payments', PaymentRequestViewSet)
-router.register(r'referrals', ReferralViewSet)
-router.register(r'classes', ClassViewSet)
-router.register(r'quizzes', QuizViewSet)
-router.register(r'news', NewsViewSet)
-router.register(r'testimonials', TestimonialViewSet)
-router.register(r'question-bank', QuestionBankViewSet)
-router.register(r'top-teachers', TopTeacherRewardViewSet)
+router.register(r'users', CoinUserViewSet, basename='users')
+router.register(r'payments', PaymentRequestViewSet, basename='payments')
+router.register(r'referrals', ReferralViewSet, basename='referrals')
+router.register(r'classes', ClassViewSet, basename='classes')
+router.register(r'quizzes', QuizViewSet, basename='quizzes')
+router.register(r'news', NewsViewSet, basename='news')
+router.register(r'testimonials', TestimonialViewSet, basename='testimonials')
+router.register(r'question-bank', QuestionBankViewSet, basename='question-bank')
+router.register(r'top-teachers', TopTeacherRewardViewSet, basename='top-teachers')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -43,3 +43,4 @@ urlpatterns = [
     # API Router
     path('api/', include(router.urls)),
 ]
+
